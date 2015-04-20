@@ -1,0 +1,100 @@
+\documentclass[fleqn]{tcdl}
+
+\title{Introducción a la Materia}
+\author[1]{Ernesto Bossi}
+\affil[1]{Profesor}
+
+\begin{document}
+
+\flushbottom
+\maketitle
+\thispagestyle{empty}
+
+\section*{Introducción}
+\fontsize{11}{14}\selectfont
+
+Los compiladores son programas informáticos que permiten traducir un programa escrito en un lenguaje, o en un archivo de entrada, en un programa escrito en otro lenguaje. Al mismo tiempo, un compilador es un sistema informático complejo, con varios componentes internos, algoritmos e interacciones entre estos componentes. Esta sección tratará sobre 
+los componentes básicos que componen un compilador moderno.
+
+\section*{Conceptos básicos de Construcción de lenguajes}
+
+\subsection*{Nociones básica y motivación}
+
+//TODO
+
+\subsection*{Estructura básica de un compilador}
+
+Un compilador es una herramienta que nos permite traducir de un lenguaje de entrada a otro lenguaje de salida. Para traducir el texto de entrada de un lenguaje a otro, el compilador debe saber la forma, la sintaxis, el contenido o el significado (semántica) del lenguaje de entrada. También necesita conocer las reglas sintácticas y semánticas del lengaje de salida. Por último necesita un esquema, en el cual trabajar para el contenido de entrada de un lenguaje a otro.
+
+La estructura gneral de un compilador generalmente deriva de esta descripción general e introductoria. Se dice que el compilador tiene un "front end", que se encarga de manjear el lenguaje de entrada. Y de un componente de "back end", que se encarga de generar el lenguaje de salida requerido. La conexión entre estos dos componentes, se hace formalmente por medio de representar el programa en una representación intermedia, cuyo significado es independiente de ambos lenguajes, pero en cuanto al significado, este mantiene el mismo que existía en el lenguaje de entrada. Para mejorar esta traducción, un compilador generalmente incluye un optimizador que analiza y reescribe esa representación intermedia.
+
+
+\subsection*{Tipos de Compiladores}
+
+Los programas informáticos son secuencias de operaciones abstractas escritas en un lenguaje de programación, un lenguaje formal diseñado para expresar operaciones computacionales. Los lenguajes de programación tienen propiedades y significados rígidos, en los cuales no se admite la ambiguedad. Un programa ambiguo no tiene significado. Las instrucciones computacionales son parte de una serie de tareas que producen resultados. 
+
+Los lenguajes informáticos permiten a los programadores y usuarios el de expresar las tareas que desean realizar en una serie de operaciones, descriptas mediante una sintaxis propia del lenguaje que utilicen, y que es sencillo para el usuario de entender. Los procesos que ejecutan los microprocesadores, microcontroladores y cualquier tipo de máquina computacional física, están diseñadas para ejecutar una serie de operaciones. Estas operaciones están descriptas a un nivel de abstracción mucho más bajo que aquellos especificados para los usuarios. Por ejemplo, un lenguaje de programación puede tener en su sintaxis una manera muy concisa y simple de declararlo, sin embargo esta simple operación se puede traducir en cientos de operaciones al nivel de instrucciones de máquina que entienden las computadoras. La herramienta que hace esta traducción de un lenguaje de programación de alto nivel, a instrucciones de máquina, se llaman compiladores. 
+
+Como se menciono en la sección anterior, un compilador se lo puede ver como una caja negra que toma un lenguaje fuente, y lo traduce a otro lenguaje:
+
+
+\begin{figure}
+\captionsetup{type=figure}
+\includegraphics[width=\textwidth]{compilador_basico.png}
+\caption{\label{fig:comp_basic}Caja negra de un compilador.}
+\end{figure}
+
+
+El lenguaje de entrada, es en general un programa en forma de texto de un lenguaje de alto nivel, como Java, C, ML, Ruby, etc y el lenguaje de salida es generalmente un conjunto de instrucciones de máquina.
+
+Algunos compiladores traducen a un lenguaje objetivo que es en realidad un lenguaje que pueden leer los programadores o usuarios, en vez de un lenguaje de bajo nivel que entienden las computadoras. Estos programas, sin embargo, necesitan otra compilación si se desea que puedan ser ejecutadas. A este tipo de compiladores, se los llama traductores, y generalmente se usan en lenguajes de investigación o lenguajes descriptores de objetos para motores de juegos.
+
+
+Otros sistemas diferentes al diagrama visto anteriormente califican como compiladores. Por ejemplo un lenguaje tipográfico que produce código PostScript puede ser considerado como un compilador. Porque toma una especificación de como debería verse un documento impreso, y produce un  archivo PostScript. PostScript es un lenguaje que describe imagenes. Debido a que el lenguaje tipográfico se traduce en un ejecutable PostScript, que pertenece a otro lenguaje, se dice que es un compilador. El código que transforma PostScript a pixeles, es tipicamente llamado un intérprete, no un compilador. Un Intérprete toma una entrada y produce como salida un resultado de la ejecución de ese programa de entrada.
+
+\begin{figure}
+\captionsetup{type=figure}
+\includegraphics[width=\textwidth]{interprete_basico.png}
+\caption{\label{fig:inter}Caja negra de un intérprete.}
+\end{figure}
+
+Algunos lenguaje adoptan un esquema de traducción mixto que incluye tanto compilación e interpretación. Por ejemplo, Java es un lenguaje que es compilado de su código fuente a una forma llamada bytecode, una representación compacta que esta pensada para disminuir los tiempos de ejecución en las aplicaciones construidas. Este bytecode que se genera en la fase de compilación es ejecutado en su correspondiente Java Virtual Machine (JVM), un intérprete de bytecode. La JVM, es en si una máquina virtual, que es una simulación de una máquina física con procesadores y memoria que permite abstraerse del hardware en el que se esta ejecutando este, e interpreta bytecode para generar resultados, por eso puede verse a la JVM como un intérprete. Muchas implementaciones de la JVM, implementan también un compilador que ejecuta en tiempo de ejecución del microprocesador físico, esto se los conoce como just-in-time-compiler o compiladores JIT.
+
+Si bien los intérpretes y compiladores no son exactamente iguales, comparten mucho en común, ya que el módulo de "front end", es similar, tienen una manera de interpretar el lenguaje de entrada, obtener su significado y verificar previamente que este sintácticamente correcto, e incluso generan abstracciones que ayudan a conocer en que estructuras se guardarán valores intermedios del programa. Sin embargo la interpretación o "back end" final, difiere ya que un compilador genera una salida que es otro lenguaje o serie de instrucciones ejecutables que una vez ejecutadas producen una salida, mientras que los intérpretes en vez solo generan una salida directamente. En este curso se apuntará directamente a tratar sobre compiladores y bytecode, aunque también se mencionará sobre los distintos tipos de interpretación ya que son en si construcciones un poco más simples que las dos anteriores.
+
+\subsection*{Principios fundamentales de la compilación}
+
+Los compiladores son programas complejos y que deben ser diseñados e implementados cuidadosamente, un compilador que falla una vez cada tanto puede ser un proyecto inmaduro, pero inaceptable para ser usado en entornos productivos. Si bien muchos problemas pueden surgir y ser resueltos de varias maneras, dos principios siempre se tienen que mantener y siempre deben cumplirse. El primer principio es:
+\\\\
+\textit{El compilador debe preservar el significado o la semantica del programa que esta siendo compilado.}
+\\\\
+La correctividad es un tema fundamental en la programacion y un compilador debe mantener la correctividad del programa fuente de entrada. Este es el contrato principal que se tiene que cumplir entre el compilador y el usuario del mismo. 
+El segundo principio es mas práctico y menciona que:
+\\\\
+\textit{El compilador debe mejorar el programa de entrada en una manera discernible.}
+\\\\
+Con esto se refiere a que el compilador, además de compilar el programa en si, debe proveer una manera de mejorar el programa de salida en cuanto a que debe ser lo más expresivo y si es posible, optimizar el programa de salida.
+
+\newpage
+\section*{Detalles de un compilador}
+\fontsize{11}{14}\selectfont
+
+Como se menciono en la sección anterior, el compilador tiene dos componentes principales uno en el que se maneja el lenguaje de entrada, "Front End", y que generará una representación intermedia, que permitirá después, al segundo módulo, "back end", generar el programa de salida, sea ejecutable, bytecode u otro programa codificado en un lenguaje de alto nivel. A continuación se muestra un diagrama de cajas negras:
+
+\begin{figure}
+\captionsetup{type=figure}
+\includegraphics[width=\textwidth]{compilador_detallado.png}
+\caption{\label{fig:inter}Caja negra de los componentes básicos de un compilador.}
+\end{figure}
+sddkjkj
+mdwkdkwddm
+mdwidiwdmiw
+mdiwd
+\begin{figure}
+\captionsetup{type=figure}
+\includegraphics[width=\textwidth]{mucho_mas_detallado.png}
+\caption{\label{fig:inter}Etapas de la compilación.}
+\end{figure}
+\bigskip
+
+\end{document}
