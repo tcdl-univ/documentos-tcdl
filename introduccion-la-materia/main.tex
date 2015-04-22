@@ -20,7 +20,7 @@ los componentes básicos que componen un compilador moderno.
 
 \subsection*{Nociones básica y motivación}
 
-//TODO
+Los ámbitos en los que se ve una mayor uso de programas de computadora ha aumentado considerablemente en los últimos años, y no solo estos programas son utilizados por expertos o programadores, sino que en estos dias se ve un mayor uso de herramientas específicas,utilizadas por usuarios comunes. Además se ha visto el auge de hardware embebido que se ha utilizado para crear programas de uso específico en autos, aviones, teléfonos, etc. Estos programas son construidos a partir de otros programas que construyen herramientas virtuales, abstrayendo a los programas construidos de los detalles de bajo nivel de las computadoras que los ejecutan. Casi todos los programas son transformados a programas ejecutables por las computadoras llamados compiladores. En esta primera unidad mostraremos 
 
 \subsection*{Estructura básica de un compilador}
 
@@ -38,7 +38,7 @@ Los lenguajes informáticos permiten a los programadores y usuarios el de expres
 Como se menciono en la sección anterior, un compilador se lo puede ver como una caja negra que toma un lenguaje fuente, y lo traduce a otro lenguaje:
 
 
-\begin{figure}
+\begin{figure}[h]
 \captionsetup{type=figure}
 \includegraphics[width=\textwidth]{compilador_basico.png}
 \caption{\label{fig:comp_basic}Caja negra de un compilador.}
@@ -52,7 +52,7 @@ Algunos compiladores traducen a un lenguaje objetivo que es en realidad un lengu
 
 Otros sistemas diferentes al diagrama visto anteriormente califican como compiladores. Por ejemplo un lenguaje tipográfico que produce código PostScript puede ser considerado como un compilador. Porque toma una especificación de como debería verse un documento impreso, y produce un  archivo PostScript. PostScript es un lenguaje que describe imagenes. Debido a que el lenguaje tipográfico se traduce en un ejecutable PostScript, que pertenece a otro lenguaje, se dice que es un compilador. El código que transforma PostScript a pixeles, es tipicamente llamado un intérprete, no un compilador. Un Intérprete toma una entrada y produce como salida un resultado de la ejecución de ese programa de entrada.
 
-\begin{figure}
+\begin{figure}[h]
 \captionsetup{type=figure}
 \includegraphics[width=\textwidth]{interprete_basico.png}
 \caption{\label{fig:inter}Caja negra de un intérprete.}
@@ -81,20 +81,50 @@ Con esto se refiere a que el compilador, además de compilar el programa en si, 
 
 Como se menciono en la sección anterior, el compilador tiene dos componentes principales uno en el que se maneja el lenguaje de entrada, "Front End", y que generará una representación intermedia, que permitirá después, al segundo módulo, "back end", generar el programa de salida, sea ejecutable, bytecode u otro programa codificado en un lenguaje de alto nivel. A continuación se muestra un diagrama de cajas negras:
 
-\begin{figure}
+\begin{figure}[h]
 \captionsetup{type=figure}
 \includegraphics[width=\textwidth]{compilador_detallado.png}
 \caption{\label{fig:inter}Caja negra de los componentes básicos de un compilador.}
 \end{figure}
-sddkjkj
-mdwkdkwddm
-mdwidiwdmiw
-mdiwd
-\begin{figure}
+
+A continuación se muestra la figura de las fases que tendra la compilación, separando las fases de Front y Back End, con el detalle de cada subetapa:
+
+\begin{figure}[h]
 \captionsetup{type=figure}
 \includegraphics[width=\textwidth]{mucho_mas_detallado.png}
 \caption{\label{fig:inter}Etapas de la compilación.}
 \end{figure}
 \bigskip
+
+\subsubsection*{Etapas de la compilación}
+
+\subsubsection*{Scanner}
+
+Con respecto a la fase de Front End, se había mencionado que es la etapa en la que se detectará y validará tanto la sintaxis como la semántica del lenguaje de entrada, el objetivo es entonces el de generar una representación intermedia, como salida de este módulo, que luego se irá modificando en las optimizaciones que disponga el compilador, y será interpretado por el módulo de back end a fin de generar el programa de salida requerido por el usuario.
+\\\\
+En esta primera fase de scanning, se pasará la entrada por un Scanner, o tokenizador, que irá leyendo la entrada e irá separando la misma en pequeños objetos que luego utilizará el próximo proceso para determinar si la sintaxis es correcta, el scanner no validará que la sintaxis es la correcta, sino que solamente creará estos objetos que tendrán el valor de la entrada en partes indivisibles, a estos objetos los llamamos tokens o lexemas.
+
+
+\subsubsection*{Parser}
+
+El parser tomará la lista de tokens generados en el scanner, y los procesará a fin de determinar si la sintaxis de la entrada es la correcta o no. En caso de que no lo sea comunicará al usuario de este error y sino construirá una abstracción que representa en cierta manera el significado del programa de entrada. En general esta abstracción se encuentra representada en forma de árbol y esta será procesada por el siguiente módulo llamado, de elaboración. En general se utilizan los árboles de sintaxis abstracta para representar esta abstracción resultante del parser.
+
+
+\subsubsection*{Elaboración}
+
+El módulo de elaboración recorre la abstracción generada por el parser, generalmente un árbol de sintaxis abstracto, y permite a partir de este determinar cuestiones relacionadas con los contexto en el cual se definen variables, métodos, objetos y otras construcciones y se realizar el análisis semántico en el que se determina si el programa en cuestión tiene sentido. Luego esta capa genera la representación intermedia final, que luego tomará e interpretará el back end.
+
+
+\subsubsection*{Optimizaciones}
+
+Esta sección se tratará mas adelante y en la fase de optimizaciones se realizarán las optimizaciones que posee el compilador en un módulo intermedio para generar un código más optimo, estas optimizaciones se realizan a nivel de la representación intermedia.
+
+\subsubsection*{Selección de instrucciones y Alocación de registros}
+
+Esta primera etapa del backend, que se encargará de generar el código ejecutable o en otro lenguaje, trata de tomar cada una de las instrucciones de la reresentación intermedia y de acuerdo al contexto en la que estan enmarcadas, seleccionar las operaciones en código de máquina. Además de realizar esta operación, se realiza la alocación de variables extra, ya que en general los registros que tiene la representación intermedia son muchos más que la que existen en código de máquina, por lo que la traducción debe contemplar la alocación de registros o de reutilizar los registros utilizados en tiempo de ejecución y dejar en segundo plano aquellos que no se usen.
+
+\subsubsection*{scheduling de instrucciones}
+
+Para producir código eficiente, el generador de código debe reordenar las operaciones que reflejan las restricciones de performance de cada máquina. Cada tipo de de operaciones tiene un distinto tiempo de ejecución en ciclos, las operaciones de acceso a memoria puede requerir cientos de ciclos, mientras que las operaciones algebraicas entre registros pueden solo tomar algunas decenas de ciclos.El impacto del costo de las distintas operaciones puede ser dramático a la hora de generar código de máquina eficiente. varios procesadores tienen la propiedad en el que pueden iniciar nuevas operaciones mientras se ejecuta una una operaciones latencia larga. Tan pronto como los resultados de operaciones de larga latencia no son referenciados hasta finalizada su ejecución, la ejecución continúa. Por otro lado si alguna instrucción a futuro requiere de esta operación de larga latencia se demora su ejecución hasta que termine la primera instrucción. Una operación nunca empezará a ajecutar hasta que sus operandos estén listos y sus resultados no este listo hasta que la operación termina. El scheduler o administrador de instrucciones reordena las operaciones en el código e intenta minimizar los ciclos desperdiciados esperando nuevas instrucciones. Este reordenamiento debe producir el mismo resultado que el original.  
 
 \end{document}
